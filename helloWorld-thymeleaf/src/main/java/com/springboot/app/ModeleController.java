@@ -93,7 +93,7 @@ public class ModeleController implements CommandLineRunner{
 		this.types = types;
 	}
 
-	@GetMapping("/indexBackOffice")
+	@GetMapping("/")
 	public String index(Model model) {
 		String req = "select idRegion, count(*) * 100.0 / (select count(*) from signalement) pource from signalement group by idRegion";
 		setChartRegions(jdbcTemplate.query(req,new ChartRegionMapper()));

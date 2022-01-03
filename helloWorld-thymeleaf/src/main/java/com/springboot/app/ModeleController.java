@@ -1,6 +1,7 @@
 package com.springboot.app;
 
 import java.util.List;
+import java.util.Vector;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -20,11 +21,22 @@ public class ModeleController implements CommandLineRunner{
 	@Autowired
     private JdbcTemplate jdbcTemplate;
 	private List<Region> regions;
+	private List<Type> types;
+	private List<ChartRegion> chartRegions;
+	private List<ChartType> chartTypes;
 	private List<LoginFront> loginFronts;
 	private Region reg;
 	private LoginFront log;
 	private FormCrud formC;
 	
+	public List<ChartType> getChartTypes() {
+		return chartTypes;
+	}
+
+	public void setChartTypes(List<ChartType> chartTypes) {
+		this.chartTypes = chartTypes;
+	}
+
 	public List<LoginFront> getLoginFronts() {
 		return loginFronts;
 	}
@@ -65,8 +77,70 @@ public class ModeleController implements CommandLineRunner{
 		this.regions = regions;
 	}
 
+	public List<ChartRegion> getChartRegions() {
+		return chartRegions;
+	}
+
+	public void setChartRegions(List<ChartRegion> chartRegions) {
+		this.chartRegions = chartRegions;
+	}
+
+	public List<Type> getTypes() {
+		return types;
+	}
+
+	public void setTypes(List<Type> types) {
+		this.types = types;
+	}
+
 	@GetMapping("/indexBackOffice")
 	public String index(Model model) {
+		String req = "select idRegion, count(*) * 100.0 / (select count(*) from signalement) pource from signalement group by idRegion";
+		setChartRegions(jdbcTemplate.query(req,new ChartRegionMapper()));
+		Vector v = new Vector();
+		for(int i=0; i<getChartRegions().size(); i++) {
+			String sql = "SELECT * FROM Region where id = ?";
+			ChartRegion cR = getChartRegions().get(i);
+	    	Region r = jdbcTemplate.queryForObject(sql, new Object[]{cR.getIdRegion()}, new RegionMapper());
+	    	v.add(r);
+		}
+		setRegions(v);
+    	String[] nomRegion = new String[getRegions().size()];
+    	double[] pourcentage = new double[getChartRegions().size()];
+    	for(int i=0; i<nomRegion.length; i++) {
+    		Region regi = getRegions().get(i);
+    		nomRegion[i] = regi.getNom();
+    	}
+    	for(int i=0; i<pourcentage.length; i++) {
+    		ChartRegion cR = getChartRegions().get(i);
+    		pourcentage[i] = cR.getPource();
+    	}
+        model.addAttribute("label",nomRegion);
+        model.addAttribute("point",pourcentage);
+        
+        String req1 = "select idType, count(*) * 100.0 / (select count(*) from signalement) pource from signalement group by idType";
+        setChartTypes(jdbcTemplate.query(req1,new ChartTypeMapper()));
+        Vector v1 = new Vector();
+		for(int i=0; i<getChartTypes().size(); i++) {
+			String sql = "SELECT * FROM Type where id = ?";
+			ChartType cT = getChartTypes().get(i);
+	    	Type t = jdbcTemplate.queryForObject(sql, new Object[]{cT.getIdType()}, new TypeMapper());
+	    	v1.add(t);
+		}
+		setTypes(v1);
+		String[] intitule = new String[getTypes().size()];
+    	double[] pourcentage1 = new double[getChartTypes().size()];
+    	for(int i=0; i<intitule.length; i++) {
+    		Type typ = getTypes().get(i);
+    		intitule[i] = typ.getIntitule();
+    		System.out.println(intitule[i]);
+    	}
+    	for(int i=0; i<pourcentage1.length; i++) {
+    		ChartType cT = getChartTypes().get(i);
+    		pourcentage1[i] = cT.getPource();
+    	}
+        model.addAttribute("label1",intitule);
+        model.addAttribute("point1",pourcentage1);
 		model.addAttribute("message","Hello World");
 		return "index";
 	}

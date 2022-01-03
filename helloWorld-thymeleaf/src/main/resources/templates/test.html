@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="ISO-8859-1">
+		<title>Thymeleaf Hello World App</title>
+	</head>
+	<body>
+		<h1>th:each</h1>
+	    <table border="1">
+	        <tr>
+	          <th>Id</th>
+	          <th>Nom</th>
+	        </tr>
+	        <tr th:each="region, state : ${regions}"
+               class="row" th:classappend="${state.odd} ? 'odd-row' : 'even-row'">
+	          <td th:utext="${region.getId()}">Id</td>
+	          <td th:utext="${region.getNom()}">Nom</td>
+	        </tr>
+	    </table>
+	</body>
+</html >

@@ -1,5 +1,5 @@
 var ctx2 = document.getElementById("chart-line").getContext("2d");
-	
+	console.log(xAxisData1);
     new Chart(ctx2, {
       type: "line",
       data: {

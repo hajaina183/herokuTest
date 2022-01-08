@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link href="../static/css/Layout.css" th:href="@{/css/test.css}"
+    rel="stylesheet" />
+<link href="../static/js/drawChart.js" th:href="@{/js/drawChart.js}" rel="javascript" />
+
+</head>
+<body>
+    <h2>Donkey</h2>
+    <p>punch</p>
+    <canvas id="ChartDemo"></canvas>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
+    <script type="text/javascript" th:inline="javascript">
+        /*<![CDATA[*/
+        var xAxisData = /*[[ ${label} ]]*/[];
+        var yAxisData = /*[[ ${point} ]]*/[];
+        /*]]>*/
+    </script>
+    <script src="/js/drawChart.js"></script>
+</body>
+</html>

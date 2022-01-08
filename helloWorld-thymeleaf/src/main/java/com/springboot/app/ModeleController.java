@@ -24,10 +24,55 @@ public class ModeleController implements CommandLineRunner{
 	private List<Type> types;
 	private List<ChartRegion> chartRegions;
 	private List<ChartType> chartTypes;
+	private List<Signalement> signalements;
 	private List<LoginFront> loginFronts;
 	private Region reg;
+	private SignalementAffecter signalementAffecter;
 	private LoginFront log;
 	private FormCrud formC;
+	private FormType formT;
+	private FormLogin formL;
+	private Type typ;
+	
+	public SignalementAffecter getSignalementAffecter() {
+		return signalementAffecter;
+	}
+
+	public void setSignalementAffecter(SignalementAffecter signalementAffecter) {
+		this.signalementAffecter = signalementAffecter;
+	}
+
+	public FormLogin getFormL() {
+		return formL;
+	}
+
+	public void setFormL(FormLogin formL) {
+		this.formL = formL;
+	}
+
+	public FormType getFormT() {
+		return formT;
+	}
+
+	public void setFormT(FormType formT) {
+		this.formT = formT;
+	}
+
+	public Type getTyp() {
+		return typ;
+	}
+
+	public void setTyp(Type typ) {
+		this.typ = typ;
+	}
+
+	public List<Signalement> getSignalements() {
+		return signalements;
+	}
+
+	public void setSignalements(List<Signalement> signalements) {
+		this.signalements = signalements;
+	}
 	
 	public List<ChartType> getChartTypes() {
 		return chartTypes;
@@ -92,10 +137,15 @@ public class ModeleController implements CommandLineRunner{
 	public void setTypes(List<Type> types) {
 		this.types = types;
 	}
-
+	
 	@GetMapping("/")
+	public String accueil() {
+		return "adminLogin";
+	}
+	
+	@GetMapping("/indexPage")
 	public String index(Model model) {
-		String req = "select idRegion, count(*) * 100.0 / (select count(*) from signalement) pource from signalement group by idRegion";
+		String req = "select idRegion, count(*) * 100.0 / (select count(*) from signalement) pource from signalement where idRegion is not null group by idRegion";
 		setChartRegions(jdbcTemplate.query(req,new ChartRegionMapper()));
 		Vector v = new Vector();
 		for(int i=0; i<getChartRegions().size(); i++) {
@@ -118,7 +168,7 @@ public class ModeleController implements CommandLineRunner{
         model.addAttribute("label",nomRegion);
         model.addAttribute("point",pourcentage);
         
-        String req1 = "select idType, count(*) * 100.0 / (select count(*) from signalement) pource from signalement group by idType";
+        String req1 = "select idType, count(*) * 100.0 / (select count(*) from signalement) pource from signalement where idRegion is not null group by idType";
         setChartTypes(jdbcTemplate.query(req1,new ChartTypeMapper()));
         Vector v1 = new Vector();
 		for(int i=0; i<getChartTypes().size(); i++) {
@@ -181,7 +231,7 @@ public class ModeleController implements CommandLineRunner{
 	}
 	
 	@GetMapping("/modifier/{id}")
-	public String modifier(Model model,@PathVariable("id") String id,@ModelAttribute LoginFront loginF) {
+	public String modifier(Model model,@PathVariable("id") String id,@ModelAttribute FormLogin formLogin) {
 		int idd = Integer.parseInt(id);
 		String sql = "SELECT * FROM LoginFront WHERE id = ?";
     	LoginFront loginFrontS = jdbcTemplate.queryForObject(sql, new Object[]{idd}, new LoginFrontMapper());
@@ -191,14 +241,67 @@ public class ModeleController implements CommandLineRunner{
 	}
 	
 	@PostMapping("/modifierTraitement")
-	public String modifierTraitement(Model model,@ModelAttribute LoginFront loginF) {
-		setLog(loginF);
-		String sql1 = "UPDATE LoginFront SET nom = '"+getLog().getNom()+"' WHERE id = "+getLog().getId()+")";
+	public String modifierTraitement(Model model,@ModelAttribute FormLogin formLogin) {
+		setFormL(formLogin);
+		String sql1 = "UPDATE LoginFront SET nom = '"+getFormL().getNom()+"' WHERE id = "+getFormL().getId();
+		System.out.println(sql1);
         int rows = jdbcTemplate.update(sql1);
     	String sql = "SELECT * FROM LoginFront";
 		setLoginFronts(jdbcTemplate.query(sql,new LoginFrontMapper()));
 		model.addAttribute("loginFronts", getLoginFronts());
 		return "utilisateur";
+	}
+	
+	@GetMapping("/signalement")
+	public String signalement(Model model) {
+		String sql = "select * from Signalement where idRegion is null";
+		setSignalements(jdbcTemplate.query(sql,new SignalementMapper()));
+		model.addAttribute("signalement", getSignalements());
+		return "signalement";
+	}
+	
+	@GetMapping("/ajouterType")
+	public String ajouterType(@ModelAttribute FormType formType) {
+		return "ajouterType";
+	}
+	
+	@PostMapping("/ajouterTypeTraitement")
+	public String ajouterTypeTraitement(@ModelAttribute FormType formType) {
+		setFormT(formType);
+		String sql1 = "INSERT INTO type (intitule) VALUES ("
+                + "'"+getFormT().getIntitule()+"')";
+        int rows = jdbcTemplate.update(sql1);
+		return "ajouterType";
+	}
+	
+	@GetMapping("/listeType")
+	public String listeType(Model model) {
+		String sql = "select * from Type";
+		setTypes(jdbcTemplate.query(sql,new TypeMapper()));
+		model.addAttribute("types", getTypes());
+		return "listeType";
+	}
+	
+	@GetMapping("/affectation/{id}")
+	public String affectation(Model model,@PathVariable("id") String id,@ModelAttribute SignalementAffecter signalementAffecter) {
+		int idd = Integer.parseInt(id);
+		model.addAttribute("id",idd);
+		String sql1 = "select * from Region";
+		setRegions(jdbcTemplate.query(sql1,new RegionMapper()));
+		model.addAttribute("regions", getRegions());
+		return "affectation";
+	}
+
+	@PostMapping("/affectationTraitement")
+	public String affectationTraitement(Model model,@ModelAttribute SignalementAffecter signalementAffecter) {
+		setSignalementAffecter(signalementAffecter);
+		String sql1 = "UPDATE Signalement SET idRegion = '"+getSignalementAffecter().getIdRegion()+"' WHERE id = "+getSignalementAffecter().getId();
+		int rows = jdbcTemplate.update(sql1);
+		System.out.println(sql1);
+		String sql = "select * from Signalement where idRegion is null";
+		setSignalements(jdbcTemplate.query(sql,new SignalementMapper()));
+		model.addAttribute("signalement", getSignalements());
+		return "signalement";
 	}
 	
 	@Override

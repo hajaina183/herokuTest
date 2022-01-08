@@ -42,7 +42,7 @@
             <div class="collapse navbar-collapse" id="navigation">
               <ul class="navbar-nav mx-auto">
                 <li class="nav-item">
-                  <a class="nav-link d-flex align-items-center me-2 active" aria-current="page" href="/indexBackOffice">
+                  <a class="nav-link d-flex align-items-center me-2 active" aria-current="page" href="/">
                     <i class="fa fa-chart-pie opacity-6 text-dark me-1"></i>
                     Tableau de bord
                   </a>
@@ -57,6 +57,12 @@
                   <a class="nav-link me-2" href="/region">
                     <i class="fas fa-user-circle opacity-6 text-dark me-1"></i>
                     Région
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link me-2" href="/signalement">
+                    <i class="fas fa-user-circle opacity-6 text-dark me-1"></i>
+                    Signalement
                   </a>
                 </li>
             </div>
@@ -78,18 +84,14 @@
             <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column ms-auto me-auto ms-lg-auto me-lg-5">
               <div class="card card-plain">
                 <div class="card-header">
-                  <h4 class="font-weight-bolder">Modifier utilisateur</h4>
-                  <p class="mb-0">Entrer les informations de l'utilisateur'</p>
+                  <h4 class="font-weight-bolder">Ajouter un type de signalement</h4>
+                  <p class="mb-0">Entrer les informations du type</p>
                 </div>
                 <div class="card-body">
-                  <form method="post" th:object="${formLogin}" th:action="@{/modifierTraitement}">
+                  <form method="post" th:object="${formType}" th:action="@{/ajouterTypeTraitement}">
                     <div class="input-group input-group-outline mb-3">
-                      <label class="form-label" th:text = "${id}"></label>
-                      <input type="text" class="form-control" th:field="*{id}">
-                    </div>
-                    <div class="input-group input-group-outline mb-3">
-                      <label class="form-label">Nom du chef de région</label>
-                      <input type="text" class="form-control" th:field="*{nom}">
+                      <label class="form-label">Intitulé</label>
+                      <input type="text" class="form-control" th:field="*{intitule}">
                     </div>
                     <div class="text-center">
                       <input type="submit" value="Ajouter" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0"/>

@@ -58,6 +58,14 @@
             <span class="nav-link-text ms-1">Utilisateur</span>
           </a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link text-white " href="/signalement">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">receipt_long</i>
+            </div>
+            <span class="nav-link-text ms-1">Signalement</span>
+          </a>
+        </li>
       </ul>
     </div>
     <div class="sidenav-footer position-absolute w-100 bottom-0 ">
@@ -97,6 +105,7 @@
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"></th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"></th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"></th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -109,6 +118,9 @@
           			  </td>
           			  <td th:utext="${loginFront.getMdp()}" class="align-middle text-center text-sm">
 			          		<span class="text-xs font-weight-bold"></span>
+          			  </td>
+          			  <td class="align-middle text-center text-sm">
+          			  	<a th:href="@{/modifier/{id}(id=${loginFront.getId()})}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>yyeee</a>
           			  </td>
 			        </tr>
                   </tbody>

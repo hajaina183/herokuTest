@@ -19,6 +19,12 @@ public class Type {
 		super();
 		this.intitule = intitule;
 	}
+	
+	public Type(int id, String intitule) {
+		super();
+		this.id = id;
+		this.intitule = intitule;
+	}
 	public Type() {
 		super();
 	}

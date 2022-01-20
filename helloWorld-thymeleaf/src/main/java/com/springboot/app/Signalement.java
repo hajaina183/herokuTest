@@ -4,10 +4,18 @@ public class Signalement {
 	int id;
     int idType;
     int idRegion;
+    int idStatusSignalement;
     String titre;
     String image;
     double longitude;
     double latitude;
+    
+	public int getIdStatusSignalement() {
+		return idStatusSignalement;
+	}
+	public void setIdStatusSignalement(int idStatusSignalement) {
+		this.idStatusSignalement = idStatusSignalement;
+	}
 	public int getId() {
 		return id;
 	}
@@ -50,6 +58,7 @@ public class Signalement {
 	public void setLatitude(double latitude) {
 		this.latitude = latitude;
 	}
+	
 	public Signalement(int id, int idType, int idRegion, String titre, String image, double longitude,
 			double latitude) {
 		super();

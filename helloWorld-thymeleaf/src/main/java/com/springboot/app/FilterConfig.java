@@ -1,4 +1,4 @@
-package com.cloudProject.cloud.filter;
+package com.springboot.app;
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;

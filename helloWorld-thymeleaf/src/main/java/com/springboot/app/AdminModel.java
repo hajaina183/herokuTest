@@ -1,4 +1,4 @@
-package com.cloudProject.cloud.models;
+package com.springboot.app;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

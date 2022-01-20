@@ -1,4 +1,4 @@
-package com.cloudProject.cloud.form;
+package com.springboot.app;
 
 public class AdminLoginForm {
 	private String username;

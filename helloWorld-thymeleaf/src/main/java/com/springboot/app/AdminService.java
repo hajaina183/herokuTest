@@ -1,12 +1,10 @@
-package com.cloudProject.cloud.services;
+package com.springboot.app;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.cloudProject.cloud.models.AdminModel;
-import com.cloudProject.cloud.repository.AdminRepository;
 
 
 @Service

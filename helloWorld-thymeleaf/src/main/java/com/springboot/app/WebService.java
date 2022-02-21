@@ -198,6 +198,11 @@ public class WebService implements CommandLineRunner {
 		
 	}
 	
+	@GetMapping("/test")
+	public String test() {
+		return "coucou";
+	}
+	
 	@GetMapping("/listeSignalementRechercher/{id}/{status}/{token}")
 	public Signalement[] getListeRechercher(Model model,@PathVariable String id,@PathVariable String status,@PathVariable String token) {
 		int istoken = traitementToken(token);

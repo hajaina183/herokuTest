@@ -7,8 +7,15 @@ public class FormSignalement {
 	double longitude;
 	double latitude;
 	String description;
+	int idStatusSignalement;
 	public int getIdType() {
 		return idType;
+	}
+	public int getIdStatusSignalement() {
+		return idStatusSignalement;
+	}
+	public void setIdStatusSignalement(int idStatusSignalement) {
+		this.idStatusSignalement = idStatusSignalement;
 	}
 	public void setIdType(int idType) {
 		this.idType = idType;
@@ -44,7 +51,7 @@ public class FormSignalement {
 		this.description = description;
 	}
 	public FormSignalement(int idType, String titre, String image, double longitude, double latitude,
-			String description) {
+			String description, int idStatusSignalement) {
 		super();
 		this.idType = idType;
 		this.titre = titre;
@@ -52,6 +59,7 @@ public class FormSignalement {
 		this.longitude = longitude;
 		this.latitude = latitude;
 		this.description = description;
+		this.idStatusSignalement = idStatusSignalement;
 	}
 	public FormSignalement() {
 		super();

@@ -1,14 +1,7 @@
 package com.springboot.app;
 
-import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Vector;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.DatatypeConverter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -19,10 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
-
 
 
 @Controller
@@ -31,7 +23,9 @@ public class ModeleController implements CommandLineRunner{
     private JdbcTemplate jdbcTemplate;
 	private List<Region> regions;
 	private List<Type> types;
+	private List<StatusSignalement> statusSignalement;
 	private List<ChartRegion> chartRegions;
+	private List<ChartStatutSignalement> chartStatutSignalement;
 	private List<ChartType> chartTypes;
 	private List<Signalement> signalements;
 	private List<LoginFront> loginFronts;
@@ -43,6 +37,22 @@ public class ModeleController implements CommandLineRunner{
 	private FormLogin formL;
 	private Type typ;
 	
+	public List<StatusSignalement> getStatusSignalement() {
+		return statusSignalement;
+	}
+
+	public void setStatusSignalement(List<StatusSignalement> statusSignalement) {
+		this.statusSignalement = statusSignalement;
+	}
+
+	public List<ChartStatutSignalement> getChartStatutSignalement() {
+		return chartStatutSignalement;
+	}
+
+	public void setChartStatutSignalement(List<ChartStatutSignalement> chartStatutSignalement) {
+		this.chartStatutSignalement = chartStatutSignalement;
+	}
+
 	public SignalementAffecter getSignalementAffecter() {
 		return signalementAffecter;
 	}
@@ -151,30 +161,7 @@ public class ModeleController implements CommandLineRunner{
 	public String accueil() {
 		return "adminLogin";
 	}
-	@Autowired
-	private AdminService adminService;
 	
-	@PostMapping("/home")
-	public ModelAndView login(@ModelAttribute(name="adminLoginForm") AdminLoginForm adminLoginForm, Model model,HttpServletRequest request,HttpServletResponse response) throws NoSuchAlgorithmException, IOException {
-		String username = adminLoginForm.getUsername();
-		String password = adminLoginForm.getPassword();	
-		String hashedPassword = DatatypeConverter.printHexBinary(MessageDigest.getInstance("MD5").digest(password.getBytes("UTF-8")));
-		System.out.println(hashedPassword);
-		if(adminService.checkLogin(username, hashedPassword.toLowerCase())) {
-			System.out.println("login success");
-			request.getSession().setAttribute("SESSION_ADMIN", "milaMilogVaoTafiditra");
-			return new ModelAndView("redirect:/indexPage");
-		}
-		//information false
-		model.addAttribute("falseInformation",true);
-		return new ModelAndView("adminLogin");
-	}
-	
-	@GetMapping("/logout")
-	public ModelAndView logout(HttpServletRequest request) {
-		request.getSession().invalidate();
-		return new ModelAndView("adminLogin");
-	}
 	@GetMapping("/indexPage")
 	public String index(Model model) {
 		String req = "select idRegion, count(*) * 100.0 / (select count(*) from signalement) pource from signalement where idRegion is not null group by idRegion";
@@ -223,6 +210,30 @@ public class ModeleController implements CommandLineRunner{
     	}
         model.addAttribute("label1",intitule);
         model.addAttribute("point1",pourcentage1);
+        
+        String req2 = "select idStatussignalement, count(*) * 100.0 / (select count(*) from signalement) pource from signalement where idRegion is not null group by idStatussignalement";
+        setChartStatutSignalement(jdbcTemplate.query(req2,new ChartStatutSignalementMapper()));
+        Vector v2 = new Vector();
+		for(int i=0; i<getChartStatutSignalement().size(); i++) {
+			String sql = "SELECT * FROM statutsignalement where id = ?";
+			ChartStatutSignalement cSt = getChartStatutSignalement().get(i);
+	    	StatusSignalement st = jdbcTemplate.queryForObject(sql, new Object[]{cSt.getIdStatussignalement()}, new StatusSignalementMapper());
+	    	v2.add(st);
+		}
+		setStatusSignalement(v2);
+		String[] intitule1 = new String[getStatusSignalement().size()];
+    	double[] pourcentage2 = new double[getChartStatutSignalement().size()];
+    	for(int i=0; i<intitule1.length; i++) {
+    		StatusSignalement stat = getStatusSignalement().get(i);
+    		intitule1[i] = stat.getIntitule();
+    		System.out.println(intitule1[i]);
+    	}
+    	for(int i=0; i<pourcentage2.length; i++) {
+    		ChartStatutSignalement cst = getChartStatutSignalement().get(i);
+    		pourcentage2[i] = cst.getPource();
+    	}
+        model.addAttribute("label2",intitule1);
+        model.addAttribute("point2",pourcentage2);
 		model.addAttribute("message","Hello World");
 		return "index";
 	}
@@ -324,7 +335,7 @@ public class ModeleController implements CommandLineRunner{
 		return "affectation";
 	}
 
-	@PostMapping("/affectationTraitement")
+	@PostMapping("/affectationTraitement") //ovaina @ModelAttribute refa mirava
 	public String affectationTraitement(Model model,@ModelAttribute SignalementAffecter signalementAffecter) {
 		setSignalementAffecter(signalementAffecter);
 		String sql1 = "UPDATE Signalement SET idRegion = '"+getSignalementAffecter().getIdRegion()+"' WHERE id = "+getSignalementAffecter().getId();

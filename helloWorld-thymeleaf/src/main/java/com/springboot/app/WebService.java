@@ -198,7 +198,7 @@ public class WebService implements CommandLineRunner {
 		
 	}
 	
-	@GetMapping("/test")
+	@GetMapping("/testKely")
 	public String test() {
 		return "coucou";
 	}

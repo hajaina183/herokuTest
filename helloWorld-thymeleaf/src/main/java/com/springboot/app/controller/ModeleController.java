@@ -184,6 +184,11 @@ public class ModeleController implements CommandLineRunner{
 		return "adminLogin";
 	}
 	
+	@RequestMapping("/welcome")
+	public String welcomepage() {
+		return "Welcome to Yawin Tutor";
+	}
+	
 	@GetMapping("/indexPage")
 	public String index(Model model) {
 		String req = "select idRegion, count(*) * 100.0 / (select count(*) from signalement) pource from signalement where idRegion is not null group by idRegion";

@@ -1,4 +1,4 @@
-package com.springboot.app;
+package com.springboot.app.controller;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -42,6 +42,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.springboot.app.FormLoginFront;
+import com.springboot.app.FormLoginPerson;
+import com.springboot.app.FormSignalement;
+import com.springboot.app.LoginFront;
+import com.springboot.app.LoginFrontMapper;
+import com.springboot.app.LoginPerson;
+import com.springboot.app.LoginPersonInscription;
+import com.springboot.app.LoginPersonMapper;
+import com.springboot.app.ReponseLoginFront;
+import com.springboot.app.Signalement;
+import com.springboot.app.SignalementChangerStatus;
+import com.springboot.app.SignalementMapper;
+import com.springboot.app.StatusSignalement;
+import com.springboot.app.StatusSignalementMapper;
+import com.springboot.app.Type;
+import com.springboot.app.TypeMapper;
 
 @RestController
 @CrossOrigin
@@ -191,7 +208,7 @@ public class WebService implements CommandLineRunner {
 	    	Signalement[] listeSignalement = new Signalement[getSignalements().size()];
 	    	for(int i=0; i<getSignalements().size(); i++) {
 	    		listeSignalement[i] = getSignalements().get(i);
-	    		System.out.println(listeSignalement[i].idStatusSignalement);
+	    		System.out.println(listeSignalement[i].getIdStatusSignalement());
 	    	}
 			return listeSignalement;
 		} else {
@@ -212,7 +229,7 @@ public class WebService implements CommandLineRunner {
 	    	Signalement[] listeSignalement = new Signalement[getSignalements().size()];
 	    	for(int i=0; i<getSignalements().size(); i++) {
 	    		listeSignalement[i] = getSignalements().get(i);
-	    		System.out.println(listeSignalement[i].idStatusSignalement);
+	    		System.out.println(listeSignalement[i].getIdStatusSignalement());
 	    	}
 			return listeSignalement;
 		} else {
@@ -432,4 +449,5 @@ public class WebService implements CommandLineRunner {
     public void run(String... args) throws Exception {
     	
     }
+
 }

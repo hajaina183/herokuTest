@@ -414,6 +414,7 @@ public class WebService implements CommandLineRunner {
 	  String fileName = "";
         try {
         	String data = dataString.split(",")[1];
+        	System.out.println("data : "+data);
             byte[] imageBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(data);
             BufferedImage image = ImageIO.read(new ByteArrayInputStream(imageBytes));
             // write the image to a file
@@ -421,7 +422,7 @@ public class WebService implements CommandLineRunner {
             Date date = new Date();        
             String dateToStr = dateFormat.format(date);
             fileName = dateToStr+".png";
-            File outputfile = new File("/img/"+fileName);
+            File outputfile = new File("src/main/resources/static/img/"+fileName);
             ImageIO.write(image, "png", outputfile);
         }catch(Exception e) {
             System.out.println(e.getStackTrace());
@@ -430,7 +431,7 @@ public class WebService implements CommandLineRunner {
     }
 
     public String encodeImage(String filename) throws Exception {
-        FileInputStream stream = new FileInputStream("/img/"+filename);
+        FileInputStream stream = new FileInputStream("src/main/resources/static/img/"+filename);
         int bufLength = 2048;
         byte[] buffer = new byte[2048];
         byte[] data;

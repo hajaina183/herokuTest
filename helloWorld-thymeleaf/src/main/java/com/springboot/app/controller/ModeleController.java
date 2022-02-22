@@ -40,7 +40,7 @@ import com.springboot.app.Type;
 import com.springboot.app.TypeMapper;
 
 
-@RestController
+@Controller
 public class ModeleController implements CommandLineRunner{
 	@Autowired
     private JdbcTemplate jdbcTemplate;

@@ -282,6 +282,11 @@ public class WebService implements CommandLineRunner {
 		}
 		return rep;
 	}
+	
+	@GetMapping("/testString/")
+	public String testString() {
+		return "coucou";
+	}
 
 	@PostMapping("/changerStatusTraitement/{token}")// manao an l update
 	public int affectationTraitement(Model model,@RequestBody SignalementChangerStatus signalementChangerStatus,@PathVariable String token) {

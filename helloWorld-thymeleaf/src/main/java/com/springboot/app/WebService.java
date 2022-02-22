@@ -5,18 +5,13 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
@@ -24,13 +19,12 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Base64;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import org.apache.commons.validator.EmailValidator;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,24 +32,16 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.apache.commons.validator.EmailValidator;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.google.gson.Gson;
 
 @RestController
 @CrossOrigin
@@ -72,68 +58,84 @@ public class WebService implements CommandLineRunner {
 	private List<StatusSignalement> statusSignalements;
 	private final Path uploadDirectory = null;
 	
-	public List<Type> getTypes() {
-		return types;
+	
+	public FormLoginFront getFormLogFF() {
+		return formLogFF;
 	}
 
-	public void setTypes(List<Type> types) {
-		this.types = types;
+
+	public void setFormLogFF(FormLoginFront formLogFF) {
+		this.formLogFF = formLogFF;
 	}
 
-	public LoginPersonInscription getLoginPersonInscription() {
-		return loginPersonInscription;
-	}
-
-	public void setLoginPersonInscription(LoginPersonInscription loginPersonInscription) {
-		this.loginPersonInscription = loginPersonInscription;
-	}
-
-	public FormLoginPerson getFormLoginPerson() {
-		return formLoginPerson;
-	}
-
-	public void setFormLoginPerson(FormLoginPerson formLoginPerson) {
-		this.formLoginPerson = formLoginPerson;
-	}
-
-	public SignalementChangerStatus getSignalementChangerStatus() {
-		return signalementChangerStatus;
-	}
-
-	public void setSignalementChangerStatus(SignalementChangerStatus signalementChangerStatus) {
-		this.signalementChangerStatus = signalementChangerStatus;
-	}
-
-	public List<StatusSignalement> getStatusSignalements() {
-		return statusSignalements;
-	}
-
-	public void setStatusSignalements(List<StatusSignalement> statusSignalements) {
-		this.statusSignalements = statusSignalements;
-	}
 
 	public FormSignalement getFormS() {
 		return formS;
 	}
 
+
 	public void setFormS(FormSignalement formS) {
 		this.formS = formS;
 	}
+
 
 	public List<Signalement> getSignalements() {
 		return signalements;
 	}
 
+
 	public void setSignalements(List<Signalement> signalements) {
 		this.signalements = signalements;
 	}
 
-	public FormLoginFront getFormLogFF() {
-		return formLogFF;
+
+	public List<Type> getTypes() {
+		return types;
 	}
 
-	public void setFormLogFF(FormLoginFront formLogFF) {
-		this.formLogFF = formLogFF;
+
+	public void setTypes(List<Type> types) {
+		this.types = types;
+	}
+
+
+	public FormLoginPerson getFormLoginPerson() {
+		return formLoginPerson;
+	}
+
+
+	public void setFormLoginPerson(FormLoginPerson formLoginPerson) {
+		this.formLoginPerson = formLoginPerson;
+	}
+
+
+	public LoginPersonInscription getLoginPersonInscription() {
+		return loginPersonInscription;
+	}
+
+
+	public void setLoginPersonInscription(LoginPersonInscription loginPersonInscription) {
+		this.loginPersonInscription = loginPersonInscription;
+	}
+
+
+	public SignalementChangerStatus getSignalementChangerStatus() {
+		return signalementChangerStatus;
+	}
+
+
+	public void setSignalementChangerStatus(SignalementChangerStatus signalementChangerStatus) {
+		this.signalementChangerStatus = signalementChangerStatus;
+	}
+
+
+	public List<StatusSignalement> getStatusSignalements() {
+		return statusSignalements;
+	}
+
+
+	public void setStatusSignalements(List<StatusSignalement> statusSignalements) {
+		this.statusSignalements = statusSignalements;
 	}
 
 	@PostMapping("/traitementLoginFront")
@@ -196,11 +198,6 @@ public class WebService implements CommandLineRunner {
 			return null;
 		}
 		
-	}
-	
-	@GetMapping("/testKely")
-	public String test() {
-		return "coucou";
 	}
 	
 	@GetMapping("/listeSignalementRechercher/{id}/{status}/{token}")
@@ -354,47 +351,6 @@ public class WebService implements CommandLineRunner {
 		}
 	}
 	
-	@Value("${file.upload-dir}")//ito maka anle anaranle fichier histockena anle fichier ,jerevo ao amin application.properties
-	String FILE_DIRECTORY;
-	@GetMapping("/encoder")
-	public String encoder(@RequestParam("base64Img") String base64Img){
-		System.out.println("base : "+base64Img);
-		String rep = "";
-		/*Calendar cal = Calendar.getInstance();
-	    SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyyHHmmssSS");
-		String fileName = sdf+".jpg";
-		String pathFile = "D:\\fianarana\\s5\\Mr_rojo\\CloudProject\\";
-		try { 
-			byte[] imageByteArray = Base64.getDecoder().decode(base64Img.getBytes(StandardCharsets.UTF_8));
-			File myFile = new File(FILE_DIRECTORY+fileName);
-			myFile.createNewFile();
-			FileOutputStream fos =new FileOutputStream(myFile);
-			fos.write(imageByteArray);
-			fos.close();
-		} catch(FileNotFoundException e) {
-			System.out.println("Image not found " + e);
-		} catch (IOException ioe) {
-			System.out.println("Exception while reading the image " + ioe);
-		}*/
-		return rep;
-	}
-	
-	@PostMapping("/ajouterPhoto")
-	public ResponseEntity<Object> fileUpload(@RequestParam("File") MultipartFile file) throws Exception{
-		
-		String fileName = file.getOriginalFilename();
-		
-		if(fileName.equals("")) return new ResponseEntity<Object>("Veuillez selectionner une image pour ce signalement", HttpStatus.OK);
-		else {
-			File myFile = new File(FILE_DIRECTORY+fileName);
-			myFile.createNewFile();
-			FileOutputStream fos =new FileOutputStream(myFile);
-			fos.write(file.getBytes());
-			fos.close();
-			return new ResponseEntity<Object>("Image ajouté avec Succes", HttpStatus.OK);
-		}
-	}
-	
 	public String dateNow()
 	{
 		LocalDateTime now = LocalDateTime.now();
@@ -432,106 +388,41 @@ public class WebService implements CommandLineRunner {
 		return rep;
 	}
 	
-	@PostMapping("/ajouterSignalement/{token}")
-	public ResponseEntity<Object> ajouterSignalement(
-			@RequestParam("idType") String idType,
-			@RequestParam("titre") String titre,
-			@RequestParam("longitude") String longitude,
-			@RequestParam("latitude") String latitude,
-			@RequestParam("description") String description,
-			@RequestParam("image") MultipartFile image,
-			@PathVariable String token
-			) throws IOException {
-		int istoken = traitementToken(token);
-		if(istoken == 1) {
-			System.out.println(image);
-			String imageFileName = image.getOriginalFilename();
-			if(imageFileName.equals("")) {
-				String sql1 = "INSERT INTO Signalement (idType,idStatussignalement,titre,longitude,latitude,description) VALUES ("
-		                +idType+",1,'"
-						+titre+"',"
-						+longitude+","
-		                +latitude+",'"
-						+description+"')";
-				int rows = jdbcTemplate.update(sql1);
-				return new ResponseEntity<Object>("Signalement ajouté avec succès", HttpStatus.OK);
-			}
-			else {
-				String sql1 = "INSERT INTO Signalement (idType,idStatussignalement,titre,image,longitude,latitude,description) VALUES ("
-			                +idType+",1,'"
-							+titre+"','"
-			                +imageFileName+"',"
-							+longitude+","
-			                +latitude+",'"
-							+description+"')";
-		        int rows = jdbcTemplate.update(sql1);
-		        File myFile = new File(FILE_DIRECTORY+imageFileName);
-		        myFile.createNewFile();
-				FileOutputStream fos =new FileOutputStream(myFile);
-				fos.write(image.getBytes());
-				fos.close();
-				
-				return new ResponseEntity<Object>("Signalement ajouté avec succès", HttpStatus.OK);
-			}	
-		} else {
-			return null;
-		}
-	}
-	
+  public String saveImage(String dataString){
+	  String fileName = "";
+        try {
+        	String data = dataString.split(",")[1];
+            byte[] imageBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(data);
+            BufferedImage image = ImageIO.read(new ByteArrayInputStream(imageBytes));
+            // write the image to a file
+            DateFormat dateFormat = new SimpleDateFormat("ddMMyyyyHHmmss");
+            Date date = new Date();        
+            String dateToStr = dateFormat.format(date);
+            fileName = dateToStr+".png";
+            File outputfile = new File("D:/fianarana/s5/Mr_rojo/CloudProject/"+fileName);
+            ImageIO.write(image, "png", outputfile);
+        }catch(Exception e) {
+            System.out.println(e.getStackTrace());
+        }
+        return fileName;
+    }
 
-	  @PostMapping("/uploadAll")
-	  @ResponseBody
-	  public boolean uploadAll(@RequestParam("file") MultipartFile file) {
+    public String encodeImage(String filename) throws Exception {
+        FileInputStream stream = new FileInputStream("D:/fianarana/s5/Mr_rojo/CloudProject/"+filename);
+        int bufLength = 2048;
+        byte[] buffer = new byte[2048];
+        byte[] data;
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        int readLength;
+        while ((readLength = stream.read(buffer, 0, bufLength)) != -1) {
+            out.write(buffer, 0, readLength);
+        }
+        data = out.toByteArray();
+        String imageString = Base64.getEncoder().encodeToString(data);
+        stream.close();
+        return imageString;
+    }
 
-	    try {
-	      Path downloadedFile = this.uploadDirectory
-	          .resolve(Paths.get(file.getOriginalFilename()));
-	      Files.deleteIfExists(downloadedFile);
-	      Files.copy(file.getInputStream(), downloadedFile);
-	      return true;
-	    }
-	    catch (IOException e) {
-	      LoggerFactory.getLogger(this.getClass()).error("uploadAll", e);
-	      return false;
-	    }
-
-	  }
-	  
-	  public String saveImage(String dataString){
-		  String fileName = "";
-	        try {
-	        	String data = dataString.split(",")[1];
-	            byte[] imageBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(data);
-	            BufferedImage image = ImageIO.read(new ByteArrayInputStream(imageBytes));
-	            // write the image to a file
-	            DateFormat dateFormat = new SimpleDateFormat("ddMMyyyyHHmmss");
-	            Date date = new Date();        
-	            String dateToStr = dateFormat.format(date);
-	            fileName = dateToStr+".png";
-	            File outputfile = new File("D:/fianarana/s5/Mr_rojo/CloudProject/"+fileName);
-	            ImageIO.write(image, "png", outputfile);
-            }catch(Exception e) {
-                System.out.println(e.getStackTrace());
-            }
-	        return fileName;
-	    }
-
-	    public String encodeImage(String filename) throws Exception {
-	        FileInputStream stream = new FileInputStream("D:/fianarana/s5/Mr_rojo/CloudProject/"+filename);
-	        int bufLength = 2048;
-	        byte[] buffer = new byte[2048];
-	        byte[] data;
-	        ByteArrayOutputStream out = new ByteArrayOutputStream();
-	        int readLength;
-	        while ((readLength = stream.read(buffer, 0, bufLength)) != -1) {
-	            out.write(buffer, 0, readLength);
-	        }
-	        data = out.toByteArray();
-	        String imageString = Base64.getEncoder().encodeToString(data);
-	        stream.close();
-	        return imageString;
-	    }
-	
 	@Override
     public void run(String... args) throws Exception {
     	

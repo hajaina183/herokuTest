@@ -1,4 +1,4 @@
-package com.springboot.app;
+package com.springboot.app.controller;
 
 import java.util.List;
 import java.util.Vector;
@@ -16,6 +16,27 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.springboot.app.ChartRegion;
+import com.springboot.app.ChartRegionMapper;
+import com.springboot.app.ChartStatutSignalement;
+import com.springboot.app.ChartStatutSignalementMapper;
+import com.springboot.app.ChartType;
+import com.springboot.app.ChartTypeMapper;
+import com.springboot.app.FormCrud;
+import com.springboot.app.FormLogin;
+import com.springboot.app.FormType;
+import com.springboot.app.LoginFront;
+import com.springboot.app.LoginFrontMapper;
+import com.springboot.app.Region;
+import com.springboot.app.RegionMapper;
+import com.springboot.app.Signalement;
+import com.springboot.app.SignalementAffecter;
+import com.springboot.app.SignalementMapper;
+import com.springboot.app.StatusSignalement;
+import com.springboot.app.StatusSignalementMapper;
+import com.springboot.app.Type;
+import com.springboot.app.TypeMapper;
 
 
 @Controller
@@ -158,7 +179,6 @@ public class ModeleController implements CommandLineRunner{
 		this.types = types;
 	}
 	
-	@ResponseBody
 	@GetMapping("/")
 	public String accueil() {
 		return "adminLogin";
@@ -270,7 +290,7 @@ public class ModeleController implements CommandLineRunner{
         String sql = "SELECT * FROM Region WHERE nom = ?";
     	Region regionS = jdbcTemplate.queryForObject(sql, new Object[]{getFormC().getNomRegion()}, new RegionMapper());
     	String sql2 = "INSERT INTO loginFront (idRegion,nom,mdp) VALUES ("
-                + regionS.getId()+",'"+getFormC().nomChefRegion+"','"+getFormC().getNomRegion()+"')";
+                + regionS.getId()+",'"+getFormC().getNomRegion()+"','"+getFormC().getNomRegion()+"')";
         int rows1 = jdbcTemplate.update(sql2);
 		return "ajouterRegion";
 	}

@@ -252,7 +252,7 @@ public class WebService implements CommandLineRunner {
 	    	Signalement[] listeSignalement = new Signalement[getSignalements().size()];
 	    	for(int i=0; i<getSignalements().size(); i++) {
 	    		listeSignalement[i] = getSignalements().get(i);
-	    		System.out.println(listeSignalement[i].idStatusSignalement);
+	    		System.out.println(listeSignalement[i].getIdStatusSignalement());
 	    	}
 			return listeSignalement;
 		} else {
@@ -274,7 +274,7 @@ public class WebService implements CommandLineRunner {
 	    	Signalement[] listeSignalement = new Signalement[getSignalements().size()];
 	    	for(int i=0; i<getSignalements().size(); i++) {
 	    		listeSignalement[i] = getSignalements().get(i);
-	    		System.out.println(listeSignalement[i].idStatusSignalement);
+	    		System.out.println(listeSignalement[i].getIdStatusSignalement());
 	    	}
 			return listeSignalement;
 		} else {
@@ -295,7 +295,7 @@ public class WebService implements CommandLineRunner {
 	    	Signalement[] listeSignalement = new Signalement[getSignalements().size()];
 	    	for(int i=0; i<getSignalements().size(); i++) {
 	    		listeSignalement[i] = getSignalements().get(i);
-	    		System.out.println(listeSignalement[i].idStatusSignalement);
+	    		System.out.println(listeSignalement[i].getIdStatusSignalement());
 	    	}
 			return listeSignalement;
 		} else {
@@ -318,7 +318,7 @@ public class WebService implements CommandLineRunner {
 	    	Signalement[] listeSignalement = new Signalement[getSignalements().size()];
 	    	for(int i=0; i<getSignalements().size(); i++) {
 	    		listeSignalement[i] = getSignalements().get(i);
-	    		System.out.println(listeSignalement[i].idStatusSignalement);
+	    		System.out.println(listeSignalement[i].getIdStatusSignalement());
 	    	}
 			return listeSignalement;
 		} else {
@@ -339,7 +339,7 @@ public class WebService implements CommandLineRunner {
 	    	Signalement[] listeSignalement = new Signalement[getSignalements().size()];
 	    	for(int i=0; i<getSignalements().size(); i++) {
 	    		listeSignalement[i] = getSignalements().get(i);
-	    		System.out.println(listeSignalement[i].idStatusSignalement);
+	    		System.out.println(listeSignalement[i].getIdStatusSignalement());
 	    	}
 			return listeSignalement;
 		} else {
@@ -361,7 +361,7 @@ public class WebService implements CommandLineRunner {
 	    	Signalement[] listeSignalement = new Signalement[getSignalements().size()];
 	    	for(int i=0; i<getSignalements().size(); i++) {
 	    		listeSignalement[i] = getSignalements().get(i);
-	    		System.out.println(listeSignalement[i].idStatusSignalement);
+	    		System.out.println(listeSignalement[i].getIdStatusSignalement());
 	    	}
 			return listeSignalement;
 		} else {
@@ -382,7 +382,7 @@ public class WebService implements CommandLineRunner {
 	    	Signalement[] listeSignalement = new Signalement[getSignalements().size()];
 	    	for(int i=0; i<getSignalements().size(); i++) {
 	    		listeSignalement[i] = getSignalements().get(i);
-	    		System.out.println(listeSignalement[i].idStatusSignalement);
+	    		System.out.println(listeSignalement[i].getIdStatusSignalement());
 	    	}
 			return listeSignalement;
 		} else {

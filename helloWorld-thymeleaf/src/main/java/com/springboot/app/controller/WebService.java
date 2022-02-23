@@ -52,6 +52,7 @@ import com.springboot.app.LoginPerson;
 import com.springboot.app.LoginPersonInscription;
 import com.springboot.app.LoginPersonMapper;
 import com.springboot.app.ReponseLoginFront;
+import com.springboot.app.ReponseLoginPerson;
 import com.springboot.app.Signalement;
 import com.springboot.app.SignalementChangerStatus;
 import com.springboot.app.SignalementMapper;
@@ -237,6 +238,158 @@ public class WebService implements CommandLineRunner {
 		}
 	}
 	
+	@GetMapping("/listeSignalementRechercherA/{id}/{status}/{token}")
+	public Signalement[] getListeRechercherA(Model model,@PathVariable String id,@PathVariable String status,@PathVariable String token) {
+		int istoken = traitementToken(token);
+		if(istoken == 1) {
+			int idd = Integer.parseInt(id);
+			String sql = "";
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			sql = "select s.id id,s.idType,s.idRegion,s.idpersonne, s.idStatussignalement,titre,image,longitude,latitude,description,date from signalement s join statutsignalement st on s.idStatussignalement = st.id where st.intitule = '"+status+"' and idRegion = "+idd;
+	    	setSignalements(jdbcTemplate.query(sql,new SignalementMapper()));
+	    	System.out.println(sql);
+	    	model.addAttribute("id",idd);
+	    	Signalement[] listeSignalement = new Signalement[getSignalements().size()];
+	    	for(int i=0; i<getSignalements().size(); i++) {
+	    		listeSignalement[i] = getSignalements().get(i);
+	    		System.out.println(listeSignalement[i].idStatusSignalement);
+	    	}
+			return listeSignalement;
+		} else {
+			return null;
+		}
+	}
+	
+	@GetMapping("/listeSignalementRechercherB/{id}/{status}/{type}/{token}")
+	public Signalement[] getListeRechercherB(Model model,@PathVariable String id,@PathVariable String status,@PathVariable String type,@PathVariable String token) {
+		int istoken = traitementToken(token);
+		if(istoken == 1) {
+			int idd = Integer.parseInt(id);
+			String sql = "";
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			sql = "select s.id id,s.idType,s.idRegion,s.idpersonne, s.idStatussignalement,titre,image,longitude,latitude,description,date from signalement s join statutsignalement st on s.idStatussignalement = st.id where st.intitule = '"+status+"' and t.intitule = '"+type+"' and idRegion = "+idd;
+	    	setSignalements(jdbcTemplate.query(sql,new SignalementMapper()));
+	    	System.out.println(sql);
+	    	model.addAttribute("id",idd);
+	    	Signalement[] listeSignalement = new Signalement[getSignalements().size()];
+	    	for(int i=0; i<getSignalements().size(); i++) {
+	    		listeSignalement[i] = getSignalements().get(i);
+	    		System.out.println(listeSignalement[i].idStatusSignalement);
+	    	}
+			return listeSignalement;
+		} else {
+			return null;
+		}
+	}
+	
+	@GetMapping("/listeSignalementRechercherC/{id}/{status}/{type}/{dateMin}/{dateMax}/{token}")
+	public Signalement[] getListeRechercherC(Model model,@PathVariable String id,@PathVariable String status,@PathVariable String type,@PathVariable String dateMin,@PathVariable String dateMax,@PathVariable String token) {
+		int istoken = traitementToken(token);
+		if(istoken == 1) {
+			int idd = Integer.parseInt(id);
+			String sql = "";
+			sql = "select s.id id,s.idType,s.idRegion,s.idpersonne, s.idStatussignalement,titre,image,longitude,latitude,description,date from signalement s join statutsignalement st on s.idStatussignalement = st.id where st.intitule = '"+status+"' and t.intitule = '"+type+"' and s.date between '"+dateMin+"' and '"+dateMax+"' and idRegion = "+idd;
+	    	setSignalements(jdbcTemplate.query(sql,new SignalementMapper()));
+	    	System.out.println(sql);
+	    	model.addAttribute("id",idd);
+	    	Signalement[] listeSignalement = new Signalement[getSignalements().size()];
+	    	for(int i=0; i<getSignalements().size(); i++) {
+	    		listeSignalement[i] = getSignalements().get(i);
+	    		System.out.println(listeSignalement[i].idStatusSignalement);
+	    	}
+			return listeSignalement;
+		} else {
+			return null;
+		}
+	}
+	
+	@GetMapping("/listeSignalementRechercherD/{id}/{type}/{token}")
+	public Signalement[] getListeRechercherD(Model model,@PathVariable String id,@PathVariable String type,@PathVariable String token) {
+		int istoken = traitementToken(token);
+		if(istoken == 1) {
+			System.out.println(type);
+			int idd = Integer.parseInt(id);
+			String sql = "";
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			sql = "select s.id id,s.idType,s.idRegion,s.idpersonne, s.idStatussignalement,titre,image,longitude,latitude,description,date from signalement s join statutsignalement st on s.idStatussignalement = st.id join type t on s.idType = t.id where t.intitule = '"+type+"' and idRegion = "+idd;
+	    	setSignalements(jdbcTemplate.query(sql,new SignalementMapper()));
+	    	System.out.println(sql);
+	    	model.addAttribute("id",idd);
+	    	Signalement[] listeSignalement = new Signalement[getSignalements().size()];
+	    	for(int i=0; i<getSignalements().size(); i++) {
+	    		listeSignalement[i] = getSignalements().get(i);
+	    		System.out.println(listeSignalement[i].idStatusSignalement);
+	    	}
+			return listeSignalement;
+		} else {
+			return null;
+		}
+	}
+	
+	@GetMapping("/listeSignalementRechercherE/{id}/{type}/{dateMin}/{dateMax}/{token}")
+	public Signalement[] getListeRechercherE(Model model,@PathVariable String id,@PathVariable String status,@PathVariable String type,@PathVariable String dateMin,@PathVariable String dateMax,@PathVariable String token) {
+		int istoken = traitementToken(token);
+		if(istoken == 1) {
+			int idd = Integer.parseInt(id);
+			String sql = "";
+			sql = "select s.id id,s.idType,s.idRegion,s.idpersonne, s.idStatussignalement,titre,image,longitude,latitude,description,date from signalement s join statutsignalement st on s.idStatussignalement = st.id where t.intitule = '"+type+"' and s.date between '"+dateMin+"' and '"+dateMax+"' and idRegion = "+idd;
+	    	setSignalements(jdbcTemplate.query(sql,new SignalementMapper()));
+	    	System.out.println(sql);
+	    	model.addAttribute("id",idd);
+	    	Signalement[] listeSignalement = new Signalement[getSignalements().size()];
+	    	for(int i=0; i<getSignalements().size(); i++) {
+	    		listeSignalement[i] = getSignalements().get(i);
+	    		System.out.println(listeSignalement[i].idStatusSignalement);
+	    	}
+			return listeSignalement;
+		} else {
+			return null;
+		}
+	}
+	
+	@GetMapping("/listeSignalementRechercherF/{id}/{dateMin}/{dateMax}/{token}")
+	public Signalement[] getListeRechercherF(Model model,@PathVariable String id,@PathVariable String dateMin,@PathVariable String dateMax,@PathVariable String token) {
+		int istoken = traitementToken(token);
+		if(istoken == 1) {
+			int idd = Integer.parseInt(id);
+			String sql = "";
+			System.out.println("date : "+dateMin);
+			sql = "select s.id id,s.idType,s.idRegion,s.idpersonne, s.idStatussignalement,titre,image,longitude,latitude,description,date from signalement s join statutsignalement st on s.idStatussignalement = st.id where s.date between '"+dateMin+"' and '"+dateMax+"' and idRegion = "+idd;
+	    	setSignalements(jdbcTemplate.query(sql,new SignalementMapper()));
+	    	System.out.println(sql);
+	    	model.addAttribute("id",idd);
+	    	Signalement[] listeSignalement = new Signalement[getSignalements().size()];
+	    	for(int i=0; i<getSignalements().size(); i++) {
+	    		listeSignalement[i] = getSignalements().get(i);
+	    		System.out.println(listeSignalement[i].idStatusSignalement);
+	    	}
+			return listeSignalement;
+		} else {
+			return null;
+		}
+	}
+	
+	@GetMapping("/listeSignalementRechercherG/{id}/{status}/{dateMin}/{dateMax}/{token}")
+	public Signalement[] getListeRechercherG(Model model,@PathVariable String id,@PathVariable String status,@PathVariable String dateMin,@PathVariable String dateMax,@PathVariable String token) {
+		int istoken = traitementToken(token);
+		if(istoken == 1) {
+			int idd = Integer.parseInt(id);
+			String sql = "";
+			sql = "select s.id id,s.idType,s.idRegion,s.idpersonne, s.idStatussignalement,titre,image,longitude,latitude,description,date from signalement s join statutsignalement st on s.idStatussignalement = st.id where st.intitule = '"+status+"' and s.date between '"+dateMin+"' and '"+dateMax+"' and idRegion = "+idd;
+	    	setSignalements(jdbcTemplate.query(sql,new SignalementMapper()));
+	    	System.out.println(sql);
+	    	model.addAttribute("id",idd);
+	    	Signalement[] listeSignalement = new Signalement[getSignalements().size()];
+	    	for(int i=0; i<getSignalements().size(); i++) {
+	    		listeSignalement[i] = getSignalements().get(i);
+	    		System.out.println(listeSignalement[i].idStatusSignalement);
+	    	}
+			return listeSignalement;
+		} else {
+			return null;
+		}
+	}
+	
 	@GetMapping("/listeType/{token}")
 	public Type[] getType(Model model,@PathVariable String token) {
 		int istoken = traitementToken(token);
@@ -263,8 +416,10 @@ public class WebService implements CommandLineRunner {
 		if(istoken == 1) {
 			setFormS(formSignalement);
 			String fileName = saveImage(getFormS().getImage());
-			String sql1 = "INSERT INTO Signalement (idType,idStatusSignalement,titre,image,longitude,latitude,description) VALUES ("
-	                +getFormS().getIdType()+","+getFormS().getIdStatusSignalement()+",'"+getFormS().getTitre()+"','"+fileName+"',"+getFormS().getLongitude()+","+getFormS().getLatitude()+",'"+getFormS().getDescription()+"')";
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");      
+			String dateToStr = dateFormat.format(getFormS().getDate());
+			String sql1 = "INSERT INTO Signalement (idType,idPersonne,idStatusSignalement,titre,image,longitude,latitude,description,date) VALUES ("
+	                +getFormS().getIdType()+","+getFormS().getIdPersonne()+","+getFormS().getIdStatusSignalement()+",'"+getFormS().getTitre()+"','"+fileName+"',"+getFormS().getLongitude()+","+getFormS().getLatitude()+",'"+getFormS().getDescription()+"','"+dateToStr+"')";
 	        int rows = jdbcTemplate.update(sql1);
 	        System.out.println(sql1);
 	        rep = 1;
@@ -386,10 +541,60 @@ public class WebService implements CommandLineRunner {
 		crypt.update(newUserId.getBytes("UTF-8"));
 		return new BigInteger(1,crypt.digest()).toString(16);
 	}
+	
+	@PostMapping("/idPersonne")
+	public int getIdPersonne(@RequestBody FormLoginPerson formLoginPerson){
+		setFormLoginPerson(formLoginPerson);
+		String sql1 = "SELECT * FROM LoginPerson Where email = ? and mdp = ?";
+		LoginPerson logF = jdbcTemplate.queryForObject(sql1, new Object[]{getFormLoginPerson().getEmail(),getFormLoginPerson().getMdp()}, new LoginPersonMapper());
+		System.out.println(sql1);
+		int id = logF.getId();
+		return id;
+	}
+	
+	@GetMapping("/listeSignalementParPersonne/{idPersonne}/{idToken}")
+	public Signalement[] listeSignalementParPersonne(Model model,@PathVariable String idPersonne) {
+		int id = Integer.parseInt(idPersonne);
+		String sql = "select * from Signalement where idPersonne ="+id+"";
+		setSignalements(jdbcTemplate.query(sql,new SignalementMapper()));
+		Signalement[] signalement = new Signalement[getSignalements().size()];
+		for(int i=0; i<getSignalements().size(); i++) {
+			signalement[i] = getSignalements().get(i);
+		}
+		return signalement;
+	}
+	
+	@GetMapping("/changerStatusTraitement/{idStatusSignalement}/{idSignalement}/{token}")// manao an l update
+	public int affectationTraitement(Model model,@PathVariable String token,@PathVariable String idSignalement,@PathVariable String idStatusSignalement) {
+		int istoken = traitementToken(token);
+		int rep = 0;
+		if(istoken == 1) {
+			setSignalementChangerStatus(signalementChangerStatus);
+			int idStatus = Integer.parseInt(idStatusSignalement);
+			int idSignal = Integer.parseInt(idSignalement);
+			String sql1 = "UPDATE Signalement SET idStatusSignalement = '"+idStatus+"' WHERE id = "+idSignal;
+			int rows = jdbcTemplate.update(sql1);
+			System.out.println(sql1);
+			rep = 1;
+		}
+		return rep;
+	}
+	
+	@GetMapping("/listeStatusSignalement")
+	public StatusSignalement[] listeStatusSignalement(Model model) {
+		String sql = "select * from statutsignalement";
+		setStatusSignalements(jdbcTemplate.query(sql,new StatusSignalementMapper()));
+		StatusSignalement[] statusSignalements = new StatusSignalement[getStatusSignalements().size()];
+		for(int i=0; i<getStatusSignalements().size(); i++) {
+			statusSignalements[i] = getStatusSignalements().get(i);
+		}
+		return statusSignalements;
+	}
 
 	@PostMapping("/traitementPerson")
-	public String traitementPerson(Model model,@RequestBody FormLoginPerson formLoginPerson) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+	public ReponseLoginPerson traitementPerson(Model model,@RequestBody FormLoginPerson formLoginPerson) throws UnsupportedEncodingException, NoSuchAlgorithmException {
 		setFormLoginPerson(formLoginPerson);
+		ReponseLoginPerson lp = new ReponseLoginPerson();
 		System.out.println(getFormLoginPerson().getEmail());
 		String rep ;
 		String sql = "SELECT Count(*) FROM LoginPerson Where email = '"+getFormLoginPerson().getEmail()+"' and mdp = '"+getFormLoginPerson().getMdp()+"'";
@@ -404,10 +609,11 @@ public class WebService implements CommandLineRunner {
 			String sql2 = "INSERT INTO Token (id,token) VALUES ("
 	                +logF.getId()+",'"+rep+"')";
 	        int rows = jdbcTemplate.update(sql2);
-			
+			lp.setId(logF.getId());
+			lp.setToken(rep);
 			//model.addAttribute("loginFront", logF);
 		}
-		return rep;
+		return lp;
 	}
 	
   public String saveImage(String dataString){

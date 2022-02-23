@@ -10,12 +10,14 @@ public class SignalementMapper implements RowMapper<Signalement> {
         signalement.setId(rs.getInt("id"));
         signalement.setIdType(rs.getInt("idType"));
         signalement.setIdRegion(rs.getInt("idRegion"));
+        signalement.setIdPersonne(rs.getInt("idPersonne"));
         signalement.setIdStatusSignalement(rs.getInt("idStatusSignalement"));
         signalement.setImage(rs.getString("image"));
         signalement.setTitre(rs.getString("titre"));
         signalement.setImage(rs.getString("image"));
         signalement.setLatitude(rs.getDouble("latitude"));
         signalement.setLongitude(rs.getDouble("longitude"));
+        signalement.setDate(rs.getDate("date"));
         return signalement;
     }
 }

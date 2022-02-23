@@ -1,5 +1,7 @@
 package com.springboot.app;
 
+import java.util.Date;
+
 public class FormSignalement {
 	int idType;
 	String titre;
@@ -8,6 +10,21 @@ public class FormSignalement {
 	double latitude;
 	String description;
 	int idStatusSignalement;
+	int idPersonne;
+	Date date;
+	
+	public int getIdPersonne() {
+		return idPersonne;
+	}
+	public void setIdPersonne(int idPersonne) {
+		this.idPersonne = idPersonne;
+	}
+	public Date getDate() {
+		return date;
+	}
+	public void setDate(Date date) {
+		this.date = date;
+	}
 	public int getIdType() {
 		return idType;
 	}
@@ -50,8 +67,9 @@ public class FormSignalement {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
 	public FormSignalement(int idType, String titre, String image, double longitude, double latitude,
-			String description, int idStatusSignalement) {
+			String description, int idStatusSignalement, int idPersonne, Date date) {
 		super();
 		this.idType = idType;
 		this.titre = titre;
@@ -60,6 +78,8 @@ public class FormSignalement {
 		this.latitude = latitude;
 		this.description = description;
 		this.idStatusSignalement = idStatusSignalement;
+		this.idPersonne = idPersonne;
+		this.date = date;
 	}
 	public FormSignalement() {
 		super();

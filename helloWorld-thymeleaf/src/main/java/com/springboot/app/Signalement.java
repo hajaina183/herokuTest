@@ -1,15 +1,45 @@
 package com.springboot.app;
 
+import java.util.Date;
+
 public class Signalement {
 	int id;
     int idType;
     int idRegion;
+    int idPersonne;
     int idStatusSignalement;
     String titre;
     String image;
     double longitude;
     double latitude;
+    Date date;
     
+	public Signalement(int id, int idType, int idRegion, int idPersonne, int idStatusSignalement, String titre,
+			String image, double longitude, double latitude, Date date) {
+		super();
+		this.id = id;
+		this.idType = idType;
+		this.idRegion = idRegion;
+		this.idPersonne = idPersonne;
+		this.idStatusSignalement = idStatusSignalement;
+		this.titre = titre;
+		this.image = image;
+		this.longitude = longitude;
+		this.latitude = latitude;
+		this.date = date;
+	}
+	public Date getDate() {
+		return date;
+	}
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	public int getIdPersonne() {
+		return idPersonne;
+	}
+	public void setIdPersonne(int idPersonne) {
+		this.idPersonne = idPersonne;
+	}
 	public int getIdStatusSignalement() {
 		return idStatusSignalement;
 	}
@@ -72,6 +102,19 @@ public class Signalement {
 	}
 	public Signalement() {
 		super();
+	}
+	public Signalement(int id, int idType, int idRegion, int idStatusSignalement, String titre, String image,
+			double longitude, double latitude, int idPersonne) {
+		super();
+		this.id = id;
+		this.idType = idType;
+		this.idRegion = idRegion;
+		this.idStatusSignalement = idStatusSignalement;
+		this.titre = titre;
+		this.image = image;
+		this.longitude = longitude;
+		this.latitude = latitude;
+		this.idPersonne = idPersonne;
 	}
     
     

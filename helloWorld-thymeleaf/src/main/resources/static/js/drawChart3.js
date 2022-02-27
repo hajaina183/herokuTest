@@ -3,7 +3,7 @@ var ctx3 = document.getElementById("chart-line-tasks").getContext("2d");
     new Chart(ctx3, {
       type: "line",
       data: {
-        labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        labels: xAxisData2,
         datasets: [{
           label: "Mobile apps",
           tension: 0,
@@ -15,7 +15,7 @@ var ctx3 = document.getElementById("chart-line-tasks").getContext("2d");
           borderWidth: 4,
           backgroundColor: "transparent",
           fill: true,
-          data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
+          data: yAxisData2,
           maxBarThickness: 6
 
         }],

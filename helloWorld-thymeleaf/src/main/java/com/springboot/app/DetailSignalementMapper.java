@@ -23,7 +23,9 @@ public class DetailSignalementMapper implements RowMapper<DetailSignalement> {
         				),
         		new Region(
         				rs.getInt("idRegion"),
-        				rs.getString("nomRegion")
+        				rs.getString("nomRegion"),
+        				rs.getDouble("latitudeRegion"),
+        				rs.getDouble("longitudeRegion")
         				),
         		rs.getString("description")
         		);

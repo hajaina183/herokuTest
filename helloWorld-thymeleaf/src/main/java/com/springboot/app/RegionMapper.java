@@ -9,6 +9,8 @@ public class RegionMapper implements RowMapper<Region> {
 		Region region = new Region();
 			region.setId(rs.getInt("id"));
 			region.setNom(rs.getString("nom"));
+			region.setLatitude(rs.getDouble("latitude"));
+			region.setLongitude(rs.getDouble("longitude"));
 			return region;
 	   }
 }

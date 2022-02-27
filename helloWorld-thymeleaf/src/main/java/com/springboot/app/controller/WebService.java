@@ -573,46 +573,8 @@ public class WebService implements CommandLineRunner {
 		}
 	}
 	
-	@Value("${file.upload-dir}")//ito maka anle anaranle fichier histockena anle fichier ,jerevo ao amin application.properties
-	String FILE_DIRECTORY;
-	@GetMapping("/encoder")
-	public String encoder(@RequestParam("base64Img") String base64Img){
-		System.out.println("base : "+base64Img);
-		String rep = "";
-		/*Calendar cal = Calendar.getInstance();
-	    SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyyHHmmssSS");
-		String fileName = sdf+".jpg";
-		String pathFile = "D:\\fianarana\\s5\\Mr_rojo\\CloudProject\\";
-		try { 
-			byte[] imageByteArray = Base64.getDecoder().decode(base64Img.getBytes(StandardCharsets.UTF_8));
-			File myFile = new File(FILE_DIRECTORY+fileName);
-			myFile.createNewFile();
-			FileOutputStream fos =new FileOutputStream(myFile);
-			fos.write(imageByteArray);
-			fos.close();
-		} catch(FileNotFoundException e) {
-			System.out.println("Image not found " + e);
-		} catch (IOException ioe) {
-			System.out.println("Exception while reading the image " + ioe);
-		}*/
-		return rep;
-	}
 	
-	@PostMapping("/ajouterPhoto")
-	public ResponseEntity<Object> fileUpload(@RequestParam("File") MultipartFile file) throws Exception{
-		
-		String fileName = file.getOriginalFilename();
-		
-		if(fileName.equals("")) return new ResponseEntity<Object>("Veuillez selectionner une image pour ce signalement", HttpStatus.OK);
-		else {
-			File myFile = new File(FILE_DIRECTORY+fileName);
-			myFile.createNewFile();
-			FileOutputStream fos =new FileOutputStream(myFile);
-			fos.write(file.getBytes());
-			fos.close();
-			return new ResponseEntity<Object>("Image ajouté avec Succes", HttpStatus.OK);
-		}
-	}
+	
 	
 	public String dateNow()
 	{
@@ -654,51 +616,6 @@ public class WebService implements CommandLineRunner {
 		return lp;
 	}
 	
-	@PostMapping("/ajouterSignalement/{token}")
-	public ResponseEntity<Object> ajouterSignalement(
-			@RequestParam("idType") String idType,
-			@RequestParam("titre") String titre,
-			@RequestParam("longitude") String longitude,
-			@RequestParam("latitude") String latitude,
-			@RequestParam("description") String description,
-			@RequestParam("image") MultipartFile image,
-			@PathVariable String token
-			) throws IOException {
-		int istoken = traitementToken(token);
-		if(istoken == 1) {
-			System.out.println(image);
-			String imageFileName = image.getOriginalFilename();
-			if(imageFileName.equals("")) {
-				String sql1 = "INSERT INTO Signalement (idType,idStatussignalement,titre,longitude,latitude,description) VALUES ("
-		                +idType+",1,'"
-						+titre+"',"
-						+longitude+","
-		                +latitude+",'"
-						+description+"')";
-				int rows = jdbcTemplate.update(sql1);
-				return new ResponseEntity<Object>("Signalement ajouté avec succès", HttpStatus.OK);
-			}
-			else {
-				String sql1 = "INSERT INTO Signalement (idType,idStatussignalement,titre,image,longitude,latitude,description) VALUES ("
-			                +idType+",1,'"
-							+titre+"','"
-			                +imageFileName+"',"
-							+longitude+","
-			                +latitude+",'"
-							+description+"')";
-		        int rows = jdbcTemplate.update(sql1);
-		        File myFile = new File(FILE_DIRECTORY+imageFileName);
-		        myFile.createNewFile();
-				FileOutputStream fos =new FileOutputStream(myFile);
-				fos.write(image.getBytes());
-				fos.close();
-				
-				return new ResponseEntity<Object>("Signalement ajouté avec succès", HttpStatus.OK);
-			}	
-		} else {
-			return null;
-		}
-	}
 	
 
 	  @PostMapping("/uploadAll")
